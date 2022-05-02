@@ -1,7 +1,8 @@
+import SortedArray from "sorted-array";
 import { SacrificeCost } from "../game/game-constants.js";
 
 export class SacrificeTracker {
-  _powerLevels = [];
+  _powerLevels = new SortedArray([]);
   _numSacrifices = 0;
 
   constructor() {}
@@ -11,7 +12,7 @@ export class SacrificeTracker {
       throw new Error("No sacrifices remaining");
     }
 
-    const power = this._powerLevels.pop();
+    const power = this._powerLevels.array.pop();
     this._numSacrifices++;
     return power;
   }
@@ -29,12 +30,11 @@ export class SacrificeTracker {
 
     // Remarks: inefficient - to keep the array sorted, we're re-sorting after every add.
     // Better to use a proper sorted array.
-    this._powerLevels.push(power);
-    this._powerLevels.sort();
+    this._powerLevels.insert(power);
   }
 
   get any() {
-    return this._powerLevels.length > 0;
+    return this._powerLevels.array.length > 0;
   }
 
   get numSacrifices() {
